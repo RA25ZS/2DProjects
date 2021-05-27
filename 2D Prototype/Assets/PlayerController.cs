@@ -11,6 +11,7 @@ public class PlayerController : MonoBehaviour
     PolygonCollider2D playerCollider;
     Animator animator;
     bool isFacingRight = true;
+    bool iSJump = true;
 
     private void Awake()
     {
@@ -28,9 +29,17 @@ public class PlayerController : MonoBehaviour
     {
         Run();
 
-        if (Input.GetKeyDown(KeyCode.Space) && playerCollider.IsTouchingLayers(LayerMask.GetMask("Ground")))
+        if (Input.GetKeyDown(KeyCode.Space) && playerCollider.IsTouchingLayers(LayerMask.GetMask("Ground")) && iSJump)
         {
             rb2D.velocity = Vector2.up * jumpSpeed;
+            animator.SetBool("IsJumping", true);
+            bool iSJump = true;
+        }
+
+        else
+        {
+            animator.SetBool("IsJumping", false);
+            bool iSJump = false;
         }
     }
 
@@ -38,9 +47,11 @@ public class PlayerController : MonoBehaviour
     {
         float horizontal = Input.GetAxis("Horizontal");
         transform.Translate(new Vector2(horizontal, 0) * Time.deltaTime * movementSpeed);
-        
-        bool playerHorizontalSpeed = Mathf.Abs(rb2D.velocity.x) > Mathf.Epsilon;
-        animator.SetBool("IsRunning", playerHorizontalSpeed);
+
+        //bool playerHorizontalSpeed = Mathf.Abs(rb2D.velocity.x) > Mathf.Epsilon;
+
+       
+            //animator.SetBool("IsRunning", true);
 
         FlipSprite(horizontal);
     }
