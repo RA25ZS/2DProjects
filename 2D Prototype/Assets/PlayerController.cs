@@ -28,7 +28,11 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         Run();
+        Jump();
+    }
 
+    private void Jump()
+    {
         if (Input.GetKeyDown(KeyCode.Space) && playerCollider.IsTouchingLayers(LayerMask.GetMask("Ground")) && iSJump)
         {
             rb2D.velocity = Vector2.up * jumpSpeed;
@@ -48,10 +52,18 @@ public class PlayerController : MonoBehaviour
         float horizontal = Input.GetAxis("Horizontal");
         transform.Translate(new Vector2(horizontal, 0) * Time.deltaTime * movementSpeed);
 
-        //bool playerHorizontalSpeed = Mathf.Abs(rb2D.velocity.x) > Mathf.Epsilon;
+        if (Mathf.Abs(horizontal) > 0)
+        {
+            animator.SetBool("IsRunning", true);
+        }
+
+        else
+        {
+            animator.SetBool("IsRunning", false);
+        }
 
        
-            //animator.SetBool("IsRunning", true);
+            
 
         FlipSprite(horizontal);
     }
